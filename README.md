@@ -95,6 +95,8 @@ tsparse_sweep_results.json      Pre-computed 10-seed sweep results
 }
 ```
 
+[https://doi.org/10.5281/zenodo.18918528]
+
 ## License
 
 MIT License — see [LICENSE](LICENSE).
