@@ -1,0 +1,33 @@
+__pycache__/
+*.pyc
+*.pyo
+.claude/
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+.env
+.venv/
+.DS_Store
+
+# LaTeX build artifacts
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Model checkpoints (large, regenerable via reproduce_paper.py)
+*.pt
+
+# Generated figures (reproducible from code)
+*.png
+!manuscript/figures/*.png
+
+# Compiled PDFs (build from source)
+manuscript/*.pdf
+!manuscript/figures/*.pdf

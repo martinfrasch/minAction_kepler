@@ -1,0 +1,17 @@
+# Core Scientific Stack
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+pandas>=2.0.0
+
+# Deep Learning (CPU/GPU)
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Baselines for Comparison
+pysindy>=1.7.0
+gplearn>=0.4.2
+
+# Utilities
+tqdm>=4.65.0
