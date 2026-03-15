@@ -59,7 +59,7 @@ We present Minimum-Action Learning (MAL), a framework that embeds biological ene
 \subsection*{Energy-Constrained Identification of Newton's Law}
 We implemented MAL as a differentiable neural network (\texttt{MinActionNet}) incorporating three key architectural innovations (Fig.~\ref{fig:architecture}, Methods):
 
-\textbf{(1) Noether Force Basis.} To enforce rotational symmetry (SO(2) invariance), we parameterize forces as radial functions: $\mathbf{F}(\mathbf{r}) = f(r)\hat{\mathbf{r}}$, where $f(r) = \sum_{i=1}^5 A_i \theta_i \phi_i(r)$ and $\phi_i \in \{r^{-2}, r^{-1}, r, 1, r^{-3}\}$ is a library of candidate basis functions. Learnable gates $A_i = \mathrm{softmax}(\alpha_i/\tau)$ select among bases via temperature-annealed competition.
+\textbf{(1) Noether Force Basis.} To enforce rotational symmetry (SO(2) invariance), we parameterize forces as radial functions: $\mathbf{F}(\mathbf{r}) = f(r)\hat{\mathbf{r}}$, where $f(r) = \sum_{i=1}^5 A_i \theta_i \phi_i(r)$ and $\phi_i \in \{r^{-2}, r^{-1}, r, 1, r^{-3}\}$ is a library of candidate basis functions. Learnable gates $A_i = \mathrm{softmax}(\ell_i/\tau)$, where $\ell_i$ are gate logits, select among bases via temperature-annealed competition.
 
 \textbf{(2) Triple-Action Objective.} The loss function implements three constraints:
 \begin{equation}
@@ -68,7 +68,7 @@ We implemented MAL as a differentiable neural network (\texttt{MinActionNet}) in
 \end{equation}
 where $\mathcal{L}_{I_{\max}}$ combines trajectory reconstruction and wide-stencil acceleration matching (maximizing information extraction from noisy data), $\mathcal{L}_{E_{\min}}$ penalizes architectural complexity via gate entropy and coefficient sparsity (minimizing energy), and $\mathcal{L}_{\mathrm{Symmetry}}$ enforces energy conservation (Noether's theorem).
 
-\textbf{(3) Bimodal Glial-Neural Optimization (BGNO).} Drawing a structural analogy from the brain's 1:1 glia-to-neuron ratio \cite{Collman2022} and evidence that glial cells mediate metabolic constraints during neural development \cite{Cheng2023, Desplats2019}, we implement a two-phase training schedule in which the Triple-Action functional drives the architecture $\mathbf{A}(t)$ along a \textit{soft-to-discrete} manifold, where energy-driven sharpening ($E_{\mathrm{min}}$) encourages the emergence of discrete structural motifs from initially uniform gate distributions. During warmup (50 epochs, low regularization $\alpha_E = 0.01$, uniform gates $\tau = 1.0$), gates $A_i = \mathrm{softmax}(\alpha_i/\tau)$ remain in a soft, exploratory state; during sparsification (150 epochs, ramping $\alpha_E \to 1.0$, annealing $\tau \to 0.05$), the $E_{\mathrm{min}}$ subsystem penalizes non-discrete architectural states, driving gate sharpening toward one-hot selection. This mechanism is analogous to temperature-annealed differentiable architecture search \cite{Xie2019SNAS}, here motivated by biological metabolic constraints rather than computational efficiency alone. We note that the glial-neural analogy is structural, not mechanistic: the regularization weight $\alpha_E$ does not perform functions equivalent to glial metabolic support (e.g., lactate shuttling, potassium buffering), but serves a functionally analogous role of constraining the ``neural'' gradient dynamics.
+\textbf{(3) Bimodal Glial-Neural Optimization (BGNO).} Drawing a structural analogy from the brain's 1:1 glia-to-neuron ratio \cite{Collman2022} and evidence that glial cells mediate metabolic constraints during neural development \cite{Cheng2023, Desplats2019}, we implement a two-phase training schedule in which the Triple-Action functional drives the architecture $\mathbf{A}(t)$ along a \textit{soft-to-discrete} manifold, where energy-driven sharpening ($E_{\mathrm{min}}$) encourages the emergence of discrete structural motifs from initially uniform gate distributions. During warmup (50 epochs, low regularization $\alpha_E = 0.01$, uniform gates $\tau = 1.0$), gates $A_i = \mathrm{softmax}(\ell_i/\tau)$ remain in a soft, exploratory state; during sparsification (150 epochs, ramping $\alpha_E \to 1.0$, annealing $\tau \to 0.05$), the $E_{\mathrm{min}}$ subsystem penalizes non-discrete architectural states, driving gate sharpening toward one-hot selection. This mechanism is analogous to temperature-annealed differentiable architecture search \cite{Xie2019SNAS}, here motivated by biological metabolic constraints rather than computational efficiency alone. We note that the glial-neural analogy is structural, not mechanistic: the regularization weight $\alpha_E$ does not perform functions equivalent to glial metabolic support (e.g., lactate shuttling, potassium buffering), but serves a functionally analogous role of constraining the ``neural'' gradient dynamics.
 
 \begin{figure}[!t]
 \centering
@@ -142,7 +142,29 @@ To test whether MAL generalizes beyond inverse-square gravity, we applied it to 
 
 The higher direct-selection success rate (90\% vs.\ 40\%) reflects Hooke's simpler \textit{competition landscape}---the loss-surface topography over gate logit space that determines which basis functions attract gradient flow during warmup. For Hooke, the linear basis $r$ is the only function in the library with the correct radial scaling at the near-circular orbits used, creating a single dominant attractor; for Kepler, $r^{-2}$ and $r^{-3}$ are near-degenerate over limited radial ranges, creating competing attractors that trap 6 of 10 seeds. Crystallization timescales ($\Delta t_{\text{span}} = 42.5 \pm 1.6$ epochs, $\gamma = 1.113 \pm 0.003$) are comparable to Kepler ($36.2 \pm 4.1$ epochs), supporting the universality of the gate competition dynamics.
 
-\subsection*{Noetherian Model Selection and Modularity}
+\begin{table}[!t]
+\centering
+\caption{Summary of MAL pipeline performance across benchmarks}
+\label{tab:summary}
+\small
+\begin{tabular}{lcc}
+\hline
+ & Kepler ($r^{-2}$) & Hooke ($r$) \\
+\hline
+Basis library & \multicolumn{2}{c}{$\{r^{-2}, r^{-1}, r, 1, r^{-3}\}$} \\
+Direct selection rate & 4/10 (40\%) & 9/10 (90\%) \\
+Pipeline rate$^*$ & 10/10 (100\%) & 10/10 (100\%) \\
+Biased init rate & 10/10 (100\%) & --- \\
+Recovered coeff. & $\hat{\theta}_0 = 0.94$ & $\hat{k} = 0.98$ \\
+Kepler exponent $\hat{p}$ & $3.01 \pm 0.01$ & --- \\
+Training energy & 0.07 kWh & 0.07 kWh \\
+Time/seed & 835 s & $\sim$835 s \\
+\hline
+\multicolumn{3}{l}{\footnotesize $^*$After energy-conservation-based cross-seed selection.} \\
+\end{tabular}
+\end{table}
+
+\subsection*{Energy-Conservation-Based Model Selection}
 Because MAL's trifunctional includes an energy-conservation term $\mathcal{L}_{\mathrm{Symmetry}} = \mathrm{Var}[E]$ (inspired by Noether's theorem linking time-translation symmetry to energy conservation), models that crystallize to the correct basis are trained to conserve energy---providing a built-in discriminant that can be applied as a model selection criterion across seeds without any additional computation. For long-horizon rollouts (5 orbital periods), we computed Hamiltonian variance $\sigma_H^2 = \langle (H - \langle H \rangle)^2 \rangle$: models selecting the correct $r^{-2}$ basis conserve energy $3\times$ better than $r^{-1}$ and $6\times$ better than $r^{-3}$ models, despite all achieving comparable short-term trajectory accuracy (SI Table~S2, Fig.~\ref{fig:energy}).
 
 \begin{figure}[!ht]
@@ -225,7 +247,7 @@ We simulated $N=16$ Keplerian orbits in 2D using a symplectic velocity-Verlet in
 \begin{equation}
 \mathbf{F}(\mathbf{r}) = -\left[\sum_{i=1}^5 A_i \theta_i \phi_i(r)\right] \frac{\mathbf{r}}{r}
 \end{equation}
-where $\phi_i \in \{r^{-2}, r^{-1}, r, 1, r^{-3}\}$, $\theta_i$ are learnable scalars (force magnitudes), and $A_i = \mathrm{softmax}(\alpha_i / \tau)$ are gates with logits $\alpha_i$ and temperature $\tau$. SO(2) symmetry is enforced by restricting dependence to radial distance $r = |\mathbf{r}|$. Candidate basis functions are treated as phenomenological radial scalings; dimensional consistency resides in the fitted coefficients $\theta_i$ rather than in the basis library itself.
+where $\phi_i \in \{r^{-2}, r^{-1}, r, 1, r^{-3}\}$, $\theta_i$ are learnable scalars (force magnitudes), and $A_i = \mathrm{softmax}(\ell_i / \tau)$ are gates with logits $\ell_i$ and temperature $\tau$. SO(2) symmetry is enforced by restricting dependence to radial distance $r = |\mathbf{r}|$. Candidate basis functions are treated as phenomenological radial scalings; dimensional consistency resides in the fitted coefficients $\theta_i$ rather than in the basis library itself.
 
 \textbf{MinActionNet Integrator.} The selected force law is embedded in a velocity-Verlet integrator:
 \begin{align}
