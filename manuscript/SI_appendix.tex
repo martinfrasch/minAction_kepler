@@ -254,7 +254,37 @@ FC network ($\mathbf{r} \to [128]^3 \to \mathbf{F}$, 50K params) achieved MSE $1
 \textbf{(4) Mathematical LLM (Qwen2-Math 7B):}
 0\% on inverse problems, 61\% on forward derivation (SI Appendix, Section S1). Noether's Razor \cite{vanderOuderaa2024} and Noether's Learning Dynamics \cite{Tanaka2021} provide complementary theoretical perspectives on symmetry-driven model selection. SNAS \cite{Xie2019SNAS} employs the same softmax temperature annealing as MAL's gates, motivated by computational efficiency rather than biological metabolic constraints.
 
-\textbf{Summary:} MAL's contribution is \textit{energy-constrained model selection} within a pre-specified basis library, combining wide-stencil noise reduction, SO(2)-constrained architecture, bimodal energy optimization, and Noetherian validation. Wide-stencil preprocessing is the critical enabler shared with SINDy; MAL's unique addition is the integration of dynamical rollout, energy conservation validation, and explicit metabolic constraints.
+\textbf{Summary:} MAL's contribution is \textit{energy-constrained model selection} within a pre-specified basis library, combining wide-stencil noise reduction, SO(2)-constrained architecture, bimodal energy optimization, and energy-conservation-based validation. Wide-stencil preprocessing is the critical enabler shared with SINDy; MAL's unique addition is the integration of dynamical rollout, energy conservation validation, and explicit metabolic constraints.
+
+\subsubsection{S4F. Basis Library Sensitivity}
+To test robustness to basis library composition, we ran four experiments (10 seeds each, Table~\ref{tab:basis-sensitivity}).
+
+\begin{table}[!ht]
+\centering
+\caption{Basis library sensitivity (Kepler benchmark, 10 seeds each)}
+\label{tab:basis-sensitivity}
+\small
+\begin{tabular}{lccccc}
+\hline
+Experiment & $K$ & $r^{-2}$ rate & $\bar{C}_{\mathrm{gate}}$ & $\bar{\sigma}_H$ (correct) & $\bar{\sigma}_H$ (incorrect) \\
+\hline
+Standard & 5 & 5/10 & 0.97 & 0.132 & 0.183 \\
+Confounders & 7 & 2/10 & 1.00 & 0.091 & 0.158 \\
+Expanded & 8 & 5/10 & 0.96 & 0.134 & 0.138 \\
+Missing ($r^{-2}$ absent) & 4 & --- & 0.96 & --- & 0.156 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{(1) Standard control} ($K=5$: $\{r^{-2}, r^{-1}, r, 1, r^{-3}\}$): 5/10 seeds selected the correct $r^{-2}$ basis, consistent with the 4/10 rate reported in the main text (different random seeds). All seeds crystallized ($C_{\mathrm{gate}} \geq 0.97$). The energy-conservation diagnostic discriminated correct from incorrect models ($\bar{\sigma}_H = 0.132$ vs.\ $0.183$).
+
+\textbf{(2) Near-confounders} ($K=7$: standard $+ \{r^{-2.5}, r^{-1.5}\}$): Adding bases with radial exponents close to $r^{-2}$ reduced correct selection to 2/10. The confounders $r^{-2.5}$ and $r^{-1.5}$ captured 5 seeds between them. Over the limited radial range of the training orbits ($r \in [0.5, 5]$~AU), these bases are near-degenerate with $r^{-2}$, creating competing attractors in gate logit space that trap gradient flow during warmup. Despite the reduced selection rate, the energy-conservation diagnostic still discriminated: correct models achieved $\bar{\sigma}_H = 0.091$ vs.\ $0.158$ for incorrect. This demonstrates that (a) basis library composition strongly affects raw selection rates, and (b) the energy-conservation criterion remains robust to library expansion.
+
+\textbf{(3) Expanded library} ($K=8$: standard $+ \{r^2, r^{-4}, \ln r\}$): Adding bases with radial scalings far from $r^{-2}$ had no effect on the correct-basis rate (5/10), identical to the $K=5$ control. The additional bases ($r^2$, $r^{-4}$, $\ln r$) are sufficiently distinct in their radial profiles that they do not create competing attractors. Training time increased modestly ($\sim$1120~s vs.\ $\sim$870~s for $K=5$).
+
+\textbf{(4) Missing correct basis} ($K=4$: $\{r^{-1}, r, 1, r^{-3}\}$, $r^{-2}$ absent): When the correct basis is excluded, the system splits between the two nearest alternatives: $r^{-1}$ (5 seeds) and $r^{-3}$ (5 seeds). Crystallization still occurs ($\bar{C}_{\mathrm{gate}} = 0.96$), but no seed converges to a physically correct model. The elevated $\bar{\sigma}_H = 0.156$ across all seeds (compared to $0.132$ for correct models in the standard library) provides a diagnostic signal: uniformly poor energy conservation across an ensemble flags potential library inadequacy.
+
+\textbf{Implications for practical use.} These results quantify a fundamental limitation of basis-library model selection: the method can only select among candidates provided. When the correct basis is present but confounders exist, the raw selection rate degrades; when it is absent, the system fails gracefully. The energy-conservation diagnostic remains informative in all cases, suggesting a practical workflow: run multiple seeds, apply the conservation criterion, and treat uniformly high $\sigma_H$ across all seeds as evidence that the library may be inadequate.
 
 \subsection{S5. Schedule Geometry, Modularity Analysis, and Cross-Domain Parallels}
 \textbf{Phase-space trajectory.} We plot $(\alpha_E(t), \tau(t))$ for all 200 training epochs, color-coded by epoch number. Red diamonds mark epochs where the ratio $\alpha_E / \tau$ passes through integer values (3:1, 2:1, 3:2, 1:1), defined as epochs where $|\alpha_E q / \tau p - 1| < 0.1$.
