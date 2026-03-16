@@ -10,15 +10,26 @@ class NoetherForceBasis(nn.Module):
     Central-force Noether network enforcing SO(2) rotational symmetry.
     Force is always radial: f(r_vec) = f_r(r) * (-r_hat).
     """
-    def __init__(self, n_terms=5):
+    # Default 5-term radial basis library
+    DEFAULT_BASIS_FNS = None  # built in get_phi when basis_fns is None
+
+    def __init__(self, n_terms=5, basis_fns=None):
         super().__init__()
-        self.n_terms = n_terms
-        self.theta = nn.Parameter(torch.randn(n_terms) * 0.1)
-        self.A_logits = nn.Parameter(torch.ones(n_terms))
+        if basis_fns is not None:
+            self.basis_fns = basis_fns
+            self.n_terms = len(basis_fns)
+        else:
+            self.basis_fns = None
+            self.n_terms = n_terms
+        self.theta = nn.Parameter(torch.randn(self.n_terms) * 0.1)
+        self.A_logits = nn.Parameter(torch.ones(self.n_terms))
         self.tau = 1.0  # gate temperature, set externally for annealing
 
     def get_phi(self, r):
         eps = 1e-8
+        if self.basis_fns is not None:
+            phi = [fn(r.clamp(min=eps)) for fn in self.basis_fns]
+            return torch.cat(phi, dim=-1)
         phi = []
         phi.append(1.0 / (r**2 + eps))   # 1/r^2
         phi.append(1.0 / (r + eps))      # 1/r
@@ -37,10 +48,10 @@ class NoetherForceBasis(nn.Module):
         return f_vec, A
 
 class MinActionNet(nn.Module):
-    def __init__(self, dt, n_terms=5):
+    def __init__(self, dt, n_terms=5, basis_fns=None):
         super().__init__()
         self.dt = dt
-        self.force_basis = NoetherForceBasis(n_terms=n_terms)
+        self.force_basis = NoetherForceBasis(n_terms=n_terms, basis_fns=basis_fns)
 
     def integrate_step(self, r, v):
         f, _ = self.force_basis(r)
