@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "Minimum-Action Learning (MAL)"
+type: software
+authors:
+  - family-names: "Frasch"
+    given-names: "Martin G."
+    affiliation: "University of Washington"
+license: MIT
+repository-code: "https://github.com/martinfrasch/minAction_kepler"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Frasch"
+      given-names: "Martin G."
+  title: "Minimum-Action Learning: Energy-Constrained Symbolic Model Selection for Physical Law Identification from Noisy Data"
+  year: 2026
+  url: "https://arxiv.org/abs/2603.16951"
+  identifiers:
+    - type: other
+      value: "arXiv:2603.16951"
+      description: "arXiv preprint"

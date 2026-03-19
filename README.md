@@ -1,8 +1,8 @@
-# MinAction.Net: Discovering Physical Laws from Noisy Observations
+# Minimum-Action Learning (MAL)
 
-**Reproducible code for:** *From Physiology to Physics: Minimum-Action Learning as a Vertically Organizing Principle for AI, Brains, and Physical Law*
+**Reproducible code for:** Frasch, M. G. (2026). *Minimum-Action Learning: Energy-Constrained Symbolic Model Selection for Physical Law Identification from Noisy Data.* arXiv:2603.16951. [https://arxiv.org/abs/2603.16951](https://arxiv.org/abs/2603.16951)
 
-MinAction.Net discovers symbolic force laws from noisy trajectory data using a **Triple-Action** optimization framework inspired by biological energy-minimization principles.
+MAL discovers symbolic force laws from noisy trajectory data using a **Triple-Action** optimization framework that combines information maximization, energy-constrained sparsity, and Noetherian symmetry enforcement.
 
 ## The Triple-Action Framework
 
@@ -14,7 +14,7 @@ $$\mathcal{L} = \alpha_I \mathcal{L}_{I_{\max}} + \alpha_E \mathcal{L}_{E_{\min}
 | **E_min** (Energy) | L1 sparsity + gate entropy + temperature annealing |
 | **L_Symmetry** (Noetherian) | SO(2) invariance + energy conservation enforcement |
 
-The architecture uses a learnable radial basis library `[1/r², 1/r, r, 1, 1/r³]` with softmax gates that crystallize from uniform to one-hot during training via Bimodal Glial-Neural Optimization (BGNO).
+The architecture uses a learnable radial basis library `[1/r², 1/r, r, 1, 1/r³]` with softmax gates that crystallize from uniform to one-hot during training via Bimodal Glial-Neural Optimization (BGNO). A wide-stencil preprocessing step (stride s=10) reduces noise variance by s⁴ = 10,000×, transforming an intractable estimation problem (SNR ≈ 0.02) into a learnable one (SNR ≈ 1.6).
 
 ## Results Summary
 
@@ -23,7 +23,20 @@ The architecture uses a learnable radial basis library `[1/r², 1/r, r, 1, 1/r³
 | Kepler | F = GM/r² | 4/10 (10/10 with biased init) | **10/10** | GM = 0.94 (6% error) | T² ∝ a³·⁰¹ |
 | Hooke | F = kr | 9/10 | **10/10** | k = 0.980 (2% error) | T = const |
 
-**Key insight:** Wide-stencil preprocessing (s=10) is the critical enabler for all methods tested, including SINDy. MAL's distinct contribution is integrated Noetherian validation — the symmetry term is intrinsic to the trifunctional, not a post-hoc check.
+The 40% raw Kepler rate is a feature of the pipeline: incorrect bases match short-term trajectories but violate energy conservation by 3–6×, providing a physics-grounded filter (Noetherian model selection) that achieves 100% identification.
+
+### Baseline Comparisons
+
+| Method | Basis ID | Interpretable | Dynamical Validation | Energy |
+|--------|----------|---------------|---------------------|--------|
+| **MAL (ours)** | **10/10** (Noetherian) | Yes (symbolic) | Rollout + conservation | 0.07 kWh |
+| Vanilla SINDy (s=10) | 10/10 | Yes | No | <0.001 kWh |
+| GP-SINDy | 8/10 | Yes | No | <0.001 kWh |
+| Ensemble-SINDy | 10/10 | Yes | No | <0.001 kWh |
+| HNN | N/A (black-box) | No | By construction | 0.006 kWh |
+| LNN | N/A (failed) | No | Hessian singular | 0.013 kWh |
+
+Wide-stencil preprocessing is the critical enabler shared by all methods. SINDy achieves comparable basis selection at <1% of MAL's cost. MAL's distinct contribution is **integrated dynamical validation** — trajectory rollout + Noetherian energy conservation — that SINDy lacks.
 
 ## Setup
 
@@ -51,6 +64,7 @@ python baseline_hnn.py                            # Hamiltonian NN
 python baseline_lnn.py                            # Lagrangian NN
 python analyze_basis_selection.py --interventions  # Basis selection analysis
 python run_biased_init.py                         # Physics-informed initialization
+python run_basis_sensitivity.py                   # Basis library sensitivity (variable K)
 ```
 
 ## Project Structure
@@ -70,8 +84,8 @@ run_tsparse_sweep.py            10-seed Kepler robustness sweep
 run_hooke_sweep.py              10-seed Hooke robustness sweep
 analyze_basis_selection.py      Basis selection diagnostics + interventions
 run_biased_init.py              Physics-informed gate initialization (10/10)
+run_basis_sensitivity.py        Basis library sensitivity (confounders, missing basis, expanded)
 reproduce_paper.py              Reproduce all paper experiments end-to-end
-tsparse_sweep_results.json      Pre-computed 10-seed sweep results
 ```
 
 ## Key Design Decisions
@@ -79,23 +93,25 @@ tsparse_sweep_results.json      Pre-computed 10-seed sweep results
 1. **Triple-Action functional:** Three objectives jointly constrain model selection — information extraction, metabolic cost minimization, and Noetherian symmetry enforcement.
 2. **Soft-to-discrete manifold:** BGNO drives gates from uniform (soft) to one-hot (discrete) via temperature annealing, implementing energy-driven architectural crystallization.
 3. **Wide-stencil derivatives (stride s=10):** Noise variance drops by s⁴ = 10,000×, transforming SNR from 0.02 to 1.6.
-4. **Intrinsic Noetherian selection:** Energy conservation is built into the trifunctional via L_Symmetry; applying this criterion across seeds achieves 100% pipeline accuracy.
+4. **Noetherian model selection:** Energy conservation discriminates correct from incorrect bases — incorrect bases violate conservation by 3–6×, providing a physics-grounded filter that achieves 100% pipeline accuracy.
 5. **Post-training calibration:** Least-squares projection recovers true force magnitude after L1-biased training.
 
 ## Citation
 
 ```bibtex
 @article{Frasch2026MAL,
-  author = {Frasch, Martin G.},
-  title = {From Physiology to Physics: Minimum-Action Learning as a Vertically
-           Organizing Principle for AI, Brains, and Physical Law},
-  journal = {TBD},
-  year = {2026},
-  note = {Under review}
+  author  = {Frasch, Martin G.},
+  title   = {Minimum-Action Learning: Energy-Constrained Symbolic Model
+             Selection for Physical Law Identification from Noisy Data},
+  year    = {2026},
+  eprint  = {2603.16951},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  url     = {https://arxiv.org/abs/2603.16951}
 }
 ```
 
-[https://doi.org/10.5281/zenodo.18918528]
+[https://doi.org/10.5281/zenodo.18918528](https://doi.org/10.5281/zenodo.18918528)
 
 ## License
 

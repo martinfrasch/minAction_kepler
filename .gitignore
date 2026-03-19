@@ -26,8 +26,6 @@ build/
 
 # Generated figures (reproducible from code)
 *.png
-!manuscript/figures/*.png
 
-# Compiled PDFs (build from source)
-manuscript/*.pdf
-!manuscript/figures/*.pdf
+# Manuscript (see https://arxiv.org/abs/2603.16951)
+manuscript/

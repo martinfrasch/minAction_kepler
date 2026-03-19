@@ -30,12 +30,7 @@ SCRIPTS = [
     ("HNN baseline", "baseline_hnn.py", []),
     ("LNN baseline", "baseline_lnn.py", []),
     ("Basis selection analysis", "analyze_basis_selection.py", ["--interventions"]),
-    # Phase 3: Reviewer-requested validation experiments
-    ("Exp 1: Hidden Variable", "experiment_hidden_variable.py", ["--seeds", "0-9"]),
-    ("Exp 2: Sensor Drift", "experiment_drift.py", ["--seeds", "0-9"]),
-    ("Exp 3: Extrapolation", "experiment_extrapolation.py", ["--seeds", "0-9"]),
-    ("Exp 4: Ablation Study", "run_ablation_sweep.py", ["--seeds", "0-9"]),
-    ("Exp 5: Extended Basis", "run_extended_basis_experiment.py", ["--seeds", "0-9"]),
+    ("Basis library sensitivity", "run_basis_sensitivity.py", []),
 ]
 
 ANALYZE_ONLY = [
