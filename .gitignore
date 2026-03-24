@@ -27,5 +27,5 @@ build/
 # Generated figures (reproducible from code)
 *.png
 
-# Manuscript (see https://arxiv.org/abs/2603.16951)
-manuscript/
+# Manuscript build artifacts (source tracked, PDFs regenerable)
+manuscript/*Notes.bib

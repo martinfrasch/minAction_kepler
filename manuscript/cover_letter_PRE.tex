@@ -1,0 +1,35 @@
+\documentclass[12pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\signature{Martin G. Frasch, MD, PhD\\
+Institute on Human Development and Disability\\
+University of Washington\\
+\texttt{mfrasch@uw.edu}}
+
+\address{Martin G. Frasch\\Institute on Human Development and Disability\\University of Washington\\Seattle, WA 98195}
+
+\begin{document}
+
+\begin{letter}{Editorial Office\\Physical Review E\\American Physical Society}
+
+\opening{Dear Editors,}
+
+I am pleased to submit the manuscript entitled ``Minimum-action learning: Energy-constrained symbolic model selection for identifying physical laws from noisy data'' for consideration as a Regular Article in Physical Review E.
+
+\textbf{Summary.} This paper presents Minimum-Action Learning (MAL), a differentiable framework for identifying symbolic force laws from noisy trajectory data. The method combines three elements within a single differentiable pipeline: (i) a wide-stencil acceleration-matching technique that reduces noise variance by $10^4\times$, transforming an intractable inverse problem (SNR $\approx 0.02$) into a learnable one (SNR $\approx 1.6$); (ii) temperature-annealed gate competition over a pre-specified basis library that drives soft-to-discrete architectural selection of the correct force law; and (iii) an energy-conservation-based model selection criterion, grounded in Noether's theorem, that discriminates the true physics from alternatives across independent training runs. On two benchmarks---Kepler inverse-square gravity and Hooke's linear restoring force---the pipeline achieves 100\% correct identification at 0.07 kWh, with 40\% energy reduction relative to prediction-error-only baselines.
+
+\textbf{Why PRE.} The manuscript sits at the intersection of computational physics, nonlinear dynamics, and scientific machine learning---core areas of PRE's scope. The key contributions are methodological: a noise-reduction technique for derivative estimation, a physics-informed architecture search mechanism, and a Noether-based model selection criterion. We provide direct, transparent comparisons against SINDy variants, Hamiltonian neural networks, and Lagrangian neural networks, clearly delineating MAL's niche (interpretable symbolic selection with dynamical validation) from existing approaches. The gate crystallization dynamics exhibit intrinsic timescales and geometric growth rates that may be of independent interest to the nonlinear dynamics community.
+
+\textbf{Distinction from prior work.} Unlike HNNs/LNNs, which learn black-box energy functions, MAL selects interpretable symbolic force laws. Unlike SINDy, MAL integrates dynamical rollout and energy-conservation verification within the training loop. The wide-stencil technique is shown to be the critical enabler for \emph{all} methods tested---a finding we report transparently, along with honest assessment of MAL's 40\% raw success rate on Kepler (improved to 100\% by the energy-conservation diagnostic).
+
+The manuscript has not been published or submitted elsewhere. All code and data are publicly available at \url{https://github.com/martinfrasch/minAction_kepler}.
+
+I suggest the following PRE sections as appropriate: \textit{Computational physics} or \textit{Machine learning}.
+
+Thank you for your consideration.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}
