@@ -98,7 +98,7 @@ def fit_kepler_exponent(a_vals, T_vals):
 # ---------------------------------------------------------------------------
 def main(save_path="mal_with_metrics.pt", data_splits=None, seed=42,
          n_epochs=200, warmup_epochs=50, tau_final=0.05, quiet=False,
-         A_logits_init=None):
+         A_logits_init=None, basis_fns=None):
     """
     Train MAL model with full metrics tracking.
 
@@ -135,7 +135,7 @@ def main(save_path="mal_with_metrics.pt", data_splits=None, seed=42,
 
     dt_obs_example = train_data["t"][0][1] - train_data["t"][0][0]
     model_dt = dt_obs_example / 5.0
-    model = MinActionNet(dt=model_dt).to(device)
+    model = MinActionNet(dt=model_dt, basis_fns=basis_fns).to(device)
     if A_logits_init is not None:
         with torch.no_grad():
             model.force_basis.A_logits.copy_(torch.tensor(A_logits_init, dtype=torch.float32))

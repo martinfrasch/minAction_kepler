@@ -20,7 +20,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.096961,
         "p_hat": 2.9947,
-        "train_time_s": 874.6,
+        "train_time_s": 879.0,
         "all_gates": [
           1.0,
           0.0,
@@ -40,7 +40,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.084241,
         "p_hat": 2.9834,
-        "train_time_s": 866.4,
+        "train_time_s": 885.8,
         "all_gates": [
           1.0,
           0.0,
@@ -60,7 +60,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.279935,
         "p_hat": 2.9732,
-        "train_time_s": 870.7,
+        "train_time_s": 880.4,
         "all_gates": [
           1.0,
           0.0,
@@ -80,7 +80,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.170865,
         "p_hat": 2.9967,
-        "train_time_s": 866.5,
+        "train_time_s": 877.1,
         "all_gates": [
           1.0,
           0.0,
@@ -100,7 +100,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.0353,
         "p_hat": 2.9993,
-        "train_time_s": 852.7,
+        "train_time_s": 878.8,
         "all_gates": [
           0.0,
           0.0,
@@ -120,7 +120,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.476318,
         "p_hat": 2.9992,
-        "train_time_s": 859.0,
+        "train_time_s": 881.5,
         "all_gates": [
           0.0,
           0.0,
@@ -140,7 +140,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.139939,
         "p_hat": 2.9997,
-        "train_time_s": 863.4,
+        "train_time_s": 908.1,
         "all_gates": [
           0.0,
           1.0,
@@ -160,7 +160,7 @@
         "c_gate": 0.9977,
         "sigma_H": 0.177997,
         "p_hat": 3.0025,
-        "train_time_s": 859.0,
+        "train_time_s": 896.2,
         "all_gates": [
           0.0,
           0.9973,
@@ -180,7 +180,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.026673,
         "p_hat": 2.995,
-        "train_time_s": 868.2,
+        "train_time_s": 877.3,
         "all_gates": [
           1.0,
           0.0,
@@ -200,7 +200,7 @@
         "c_gate": 0.7192,
         "sigma_H": 0.08442,
         "p_hat": 2.9975,
-        "train_time_s": 883.7,
+        "train_time_s": 895.0,
         "all_gates": [
           0.0,
           0.7348,
@@ -234,7 +234,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.096961,
         "p_hat": 2.9947,
-        "train_time_s": 1054.5,
+        "train_time_s": 1051.2,
         "all_gates": [
           1.0,
           0.0,
@@ -256,7 +256,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.084242,
         "p_hat": 2.9834,
-        "train_time_s": 1030.6,
+        "train_time_s": 1049.7,
         "all_gates": [
           1.0,
           0.0,
@@ -278,7 +278,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.216348,
         "p_hat": 2.9732,
-        "train_time_s": 1038.2,
+        "train_time_s": 1060.5,
         "all_gates": [
           0.0,
           0.0,
@@ -300,7 +300,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.241381,
         "p_hat": 2.9967,
-        "train_time_s": 1033.6,
+        "train_time_s": 1035.2,
         "all_gates": [
           0.0,
           0.0,
@@ -322,7 +322,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.0353,
         "p_hat": 2.9993,
-        "train_time_s": 1028.0,
+        "train_time_s": 1046.8,
         "all_gates": [
           0.0,
           0.0,
@@ -344,7 +344,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.317687,
         "p_hat": 2.9992,
-        "train_time_s": 1042.0,
+        "train_time_s": 1062.0,
         "all_gates": [
           0.0,
           0.0,
@@ -366,7 +366,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.082334,
         "p_hat": 2.9997,
-        "train_time_s": 1040.7,
+        "train_time_s": 1103.9,
         "all_gates": [
           0.0,
           0.0,
@@ -388,7 +388,7 @@
         "c_gate": 0.9989,
         "sigma_H": 0.178701,
         "p_hat": 3.0025,
-        "train_time_s": 1043.5,
+        "train_time_s": 1045.0,
         "all_gates": [
           0.0,
           0.9989,
@@ -410,7 +410,7 @@
         "c_gate": 0.9999,
         "sigma_H": 0.125157,
         "p_hat": 2.995,
-        "train_time_s": 1036.0,
+        "train_time_s": 1072.6,
         "all_gates": [
           0.0,
           0.0,
@@ -432,7 +432,7 @@
         "c_gate": 0.9762,
         "sigma_H": 0.069552,
         "p_hat": 2.9975,
-        "train_time_s": 1044.0,
+        "train_time_s": 1064.1,
         "all_gates": [
           0.0,
           0.0087,
@@ -465,7 +465,7 @@
         "c_gate": 0.7472,
         "sigma_H": 0.143895,
         "p_hat": 2.9947,
-        "train_time_s": 789.2,
+        "train_time_s": 800.6,
         "all_gates": [
           0.7319,
           0.0,
@@ -484,7 +484,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.110307,
         "p_hat": 2.9834,
-        "train_time_s": 779.4,
+        "train_time_s": 786.3,
         "all_gates": [
           0.0,
           0.0,
@@ -503,7 +503,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.219091,
         "p_hat": 2.9732,
-        "train_time_s": 774.5,
+        "train_time_s": 789.6,
         "all_gates": [
           1.0,
           0.0,
@@ -522,7 +522,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.184667,
         "p_hat": 2.9967,
-        "train_time_s": 771.4,
+        "train_time_s": 779.6,
         "all_gates": [
           1.0,
           0.0,
@@ -541,7 +541,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.0353,
         "p_hat": 2.9993,
-        "train_time_s": 773.7,
+        "train_time_s": 787.9,
         "all_gates": [
           0.0,
           0.0,
@@ -560,7 +560,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.476318,
         "p_hat": 2.9992,
-        "train_time_s": 783.8,
+        "train_time_s": 799.4,
         "all_gates": [
           0.0,
           0.0,
@@ -579,7 +579,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.065841,
         "p_hat": 2.9997,
-        "train_time_s": 780.9,
+        "train_time_s": 798.5,
         "all_gates": [
           0.0,
           0.0,
@@ -598,7 +598,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.179184,
         "p_hat": 3.0025,
-        "train_time_s": 771.5,
+        "train_time_s": 785.5,
         "all_gates": [
           1.0,
           0.0,
@@ -617,7 +617,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.051216,
         "p_hat": 2.995,
-        "train_time_s": 773.8,
+        "train_time_s": 790.5,
         "all_gates": [
           0.0,
           0.0,
@@ -636,7 +636,7 @@
         "c_gate": 0.8639,
         "sigma_H": 0.091432,
         "p_hat": 2.9975,
-        "train_time_s": 777.1,
+        "train_time_s": 803.6,
         "all_gates": [
           0.7467,
           0.0,
@@ -670,7 +670,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.096961,
         "p_hat": 2.9947,
-        "train_time_s": 1111.9,
+        "train_time_s": 1126.9,
         "all_gates": [
           1.0,
           0.0,
@@ -693,7 +693,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.084246,
         "p_hat": 2.9834,
-        "train_time_s": 1128.7,
+        "train_time_s": 1134.2,
         "all_gates": [
           0.9999,
           0.0,
@@ -716,7 +716,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.279935,
         "p_hat": 2.9732,
-        "train_time_s": 1118.1,
+        "train_time_s": 1123.1,
         "all_gates": [
           1.0,
           0.0,
@@ -739,7 +739,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.241381,
         "p_hat": 2.9967,
-        "train_time_s": 1120.0,
+        "train_time_s": 1142.1,
         "all_gates": [
           0.0,
           0.0,
@@ -762,7 +762,7 @@
         "c_gate": 0.9988,
         "sigma_H": 0.089946,
         "p_hat": 2.9993,
-        "train_time_s": 1113.8,
+        "train_time_s": 1110.1,
         "all_gates": [
           0.0,
           0.9991,
@@ -785,7 +785,7 @@
         "c_gate": 0.9995,
         "sigma_H": 0.179886,
         "p_hat": 2.9992,
-        "train_time_s": 1117.0,
+        "train_time_s": 1123.5,
         "all_gates": [
           0.9994,
           0.0,
@@ -808,7 +808,7 @@
         "c_gate": 0.8485,
         "sigma_H": 0.098443,
         "p_hat": 2.9997,
-        "train_time_s": 1119.8,
+        "train_time_s": 1112.0,
         "all_gates": [
           0.0027,
           0.6904,
@@ -831,7 +831,7 @@
         "c_gate": 0.9997,
         "sigma_H": 0.179058,
         "p_hat": 3.0025,
-        "train_time_s": 1122.9,
+        "train_time_s": 1128.2,
         "all_gates": [
           0.0,
           0.9997,
@@ -854,7 +854,7 @@
         "c_gate": 1.0,
         "sigma_H": 0.026668,
         "p_hat": 2.995,
-        "train_time_s": 1122.0,
+        "train_time_s": 1130.9,
         "all_gates": [
           1.0,
           0.0,
@@ -877,7 +877,7 @@
         "c_gate": 0.7093,
         "sigma_H": 0.082282,
         "p_hat": 2.9975,
-        "train_time_s": 1111.3,
+        "train_time_s": 1132.9,
         "all_gates": [
           0.0,
           0.7344,

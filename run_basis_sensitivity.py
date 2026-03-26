@@ -23,6 +23,7 @@ Results saved to: basis_sensitivity_results.json
 
 import argparse
 import json
+import os
 import time
 import numpy as np
 import torch
@@ -179,7 +180,7 @@ def estimate_period(r_clean, t):
 # ---------------------------------------------------------------------------
 def run_single_seed(seed, basis_fns, basis_labels, correct_idx,
                     n_epochs=200, warmup_epochs=50, tau_final=0.05,
-                    device='cuda'):
+                    device='cuda', ckpt_dir=None, exp_name=None):
     """Train one MAL model with custom basis library and return results dict."""
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -238,6 +239,21 @@ def run_single_seed(seed, basis_fns, basis_labels, correct_idx,
 
     # Post-training calibration
     calibrate_theta(model, train_data, dt_obs)
+
+    # Save per-seed checkpoint
+    if ckpt_dir is not None and exp_name is not None:
+        os.makedirs(ckpt_dir, exist_ok=True)
+        ckpt_path = os.path.join(ckpt_dir, f"{exp_name}_seed{seed}_mal.pt")
+        torch.save({
+            'model_state_dict': model.state_dict(),
+            'model_dt': model_dt,
+            'basis_labels': basis_labels,
+            'experiment': exp_name,
+            'seed': seed,
+            'n_epochs': n_epochs,
+            'train_time_s': train_time,
+        }, ckpt_path)
+        print(f"    checkpoint saved: {ckpt_path}")
 
     # Extract results
     with torch.no_grad():
@@ -298,6 +314,8 @@ def main():
                         help='Training epochs per seed')
     parser.add_argument('--device', type=str, default='cuda',
                         help='Device (cuda or cpu)')
+    parser.add_argument('--ckpt-dir', type=str, default='basis_sensitivity',
+                        help='Directory for per-seed checkpoints')
     args = parser.parse_args()
 
     if args.experiment == 'all':
@@ -305,7 +323,15 @@ def main():
     else:
         experiments = [args.experiment]
 
-    all_results = {}
+    outfile = 'basis_sensitivity_results.json'
+
+    # Load existing results for resume support
+    if os.path.exists(outfile):
+        with open(outfile, 'r') as f:
+            all_results = json.load(f)
+        print(f"Loaded existing results from {outfile} (resume mode)")
+    else:
+        all_results = {}
 
     for exp_name in experiments:
         print(f"\n{'='*60}")
@@ -319,12 +345,26 @@ def main():
         else:
             print("Correct basis: ABSENT from library")
 
+        # Load previously completed seeds for this experiment
+        existing_seeds = {}
+        if exp_name in all_results:
+            for r in all_results[exp_name].get('seeds', []):
+                if 'error' not in r:
+                    existing_seeds[r['seed']] = r
+
         results = []
         for seed in range(args.seeds):
+            # Skip seeds that already completed successfully
+            if seed in existing_seeds:
+                print(f"  Seed {seed}: SKIP (already completed)")
+                results.append(existing_seeds[seed])
+                continue
+
             try:
                 r = run_single_seed(
                     seed, basis_fns, basis_labels, correct_idx,
-                    n_epochs=args.epochs, device=args.device
+                    n_epochs=args.epochs, device=args.device,
+                    ckpt_dir=args.ckpt_dir, exp_name=exp_name,
                 )
                 results.append(r)
             except Exception as e:
@@ -332,6 +372,15 @@ def main():
                 traceback.print_exc()
                 print(f"    FAILED seed {seed}: {e}")
                 results.append({'seed': seed, 'error': str(e)})
+
+            # Incremental save after each seed
+            all_results[exp_name] = {
+                'basis_labels': basis_labels,
+                'correct_idx': correct_idx,
+                'seeds': results,
+            }
+            with open(outfile, 'w') as f:
+                json.dump(all_results, f, indent=2, default=str)
 
         # Summary
         valid = [r for r in results if 'error' not in r]
@@ -357,8 +406,7 @@ def main():
             'seeds': results,
         }
 
-    # Save results
-    outfile = 'basis_sensitivity_results.json'
+    # Final save
     with open(outfile, 'w') as f:
         json.dump(all_results, f, indent=2, default=str)
     print(f"\nResults saved to {outfile}")
